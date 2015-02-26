@@ -86,7 +86,7 @@ Reblog URLS:
 	# make video
 	# ffmpeg -f image2 -r 12 -pattern_type glob -i '*.png' -vcodec mpeg4 -y movie.mp4
 	movie_filename = "../movie_" + str(width) + "_" + str(height) + "_" + speed + ".mp4" 
-	subprocess.call(["ffmpeg", "-f", "image2", "-r", speed, "-pattern_type", "glob", "-i", "*.png", "-vcodec", "mpeg4", "-y", movie_filename])
+	subprocess.call(["ffmpeg", "-f", "image2", "-r", speed, "-pattern_type", "glob", "-i", "*.png", "-vcodec", "mpeg4", "-qscale:v", "1", "-y", movie_filename])
 	print "\nVideo successfully saved."
 
 # WORK

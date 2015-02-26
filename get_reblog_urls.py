@@ -15,9 +15,9 @@ from time import sleep
 
 # VARIABLES
 
-my_url = "http://nasahistory.tumblr.com/post/111883935036/this-is-a-great-view-of-the-space-shuttle-rearing"
+my_url = "http://allcapspoetry.tumblr.com/post/111030863348/afraid-the-neighbourhood"
 
-my_max_pages = 2
+my_max_pages = 20
 
 # FUNCTIONS
 
@@ -77,8 +77,11 @@ def get_reblog_urls(source_url, max_pages):
   while next_notes_id and i <= max_pages:
     next_notes_ids.append(next_notes_id)
     next_notes_id = browse_notes(notes_url_tumblr + '?from_c=' + next_notes_id)
-    i += 50
+    i += 1
     sleep(1)
+  
+  print 'Next notes IDs'
+  print next_notes_ids
 
   # get notes permalinks from dashboard
   # check if it's a tumblr.com domain or a custom one
