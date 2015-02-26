@@ -63,7 +63,10 @@ def get_reblog_urls(source_url, max_pages):
   # get ids to browse notes (from_c)
   parsed_uri = urlparse(source_url)
   domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-  post_id = re.findall("http://.*/post/(.*)/", source_url)[0]
+  try:
+    post_id = re.findall("http://.*/post/(.*)/", source_url)[0]
+  except IndexError:
+     post_id = re.findall("http://.*/post/(.*)", source_url)[0]   
   # tumblr permalink formatted to get notes
   notes_url_tumblr = domain + 'notes/' + post_id + '/' + post_key
   print "Permalink of Tumblr notes: " + notes_url_tumblr + "\n"

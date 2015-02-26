@@ -43,6 +43,7 @@ def main(width, height, max_pages, speed, source_url):
 
 	# get permalinks
 	urls = get_reblog_urls(source_url, max_pages)
+	print "Amount of reblogs: " + str(len(urls))
 
 	# create and go into folder
 	directory = source_url
@@ -84,8 +85,8 @@ Reblog URLS:
 
 	# make video
 	# ffmpeg -f image2 -r 12 -pattern_type glob -i '*.png' -vcodec mpeg4 -y movie.mp4
-	movie_filename = "../movie_" + str(width) + "_" + str(height) + ".mp4" 
-	subprocess.call(["ffmpeg", "-f", "image2", "-r", "12", "-pattern_type", "glob", "-i", "*.png", "-vcodec", "mpeg4", "-y", movie_filename])
+	movie_filename = "../movie_" + str(width) + "_" + str(height) + "_" + speed + ".mp4" 
+	subprocess.call(["ffmpeg", "-f", "image2", "-r", speed, "-pattern_type", "glob", "-i", "*.png", "-vcodec", "mpeg4", "-y", movie_filename])
 	print "\nVideo successfully saved."
 
 # WORK
