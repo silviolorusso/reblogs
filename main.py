@@ -107,7 +107,7 @@ Reblog URLS:
 			delay += 0.04
 		else:
 			delay = 0
-		print "Screenshot " + str(i) + "out of " + str(len(urls)) "  saved."
+		print "Screenshot " + str(i) + " out of " + str(len(urls)) + " saved."
 
 	# make video
 	# ffmpeg -f image2 -pattern_type glob -i '*.png' -r 12 -vcodec mpeg4 -qscale:v 1 -y movie.mp4
