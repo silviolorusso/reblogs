@@ -12,6 +12,7 @@ import urllib2
 import re
 from urlparse import urlparse
 from time import sleep
+from datetime import date
 
 # VARIABLES
 

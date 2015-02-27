@@ -607,17 +607,76 @@
         {/block:IfGoogleAnalyticsID}
 
         <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
+        <script src="http://www.appelsiini.net/download/jquery.viewport.mini.js"></script>
         <script>
+        // add ?api=1 to vimeo iframe url
+
+        // check if element if fully visible (http://stackoverflow.com/questions/19482268/jquery-detect-if-element-is-fully-in-viewport)
+        jQuery.fn.isFullyVisible = function(){
+          var win = $(window);
+          var viewport = {
+              top : win.scrollTop(),
+              left : win.scrollLeft()
+          };
+          viewport.right = viewport.left + win.width();
+          viewport.bottom = viewport.top + win.height();
+
+          var elemtHeight = this.height();// Get the full height of current element
+          elemtHeight = Math.round(elemtHeight);// Round it to whole humber
+
+          var bounds = this.offset();// Coordinates of current element
+          bounds.top = bounds.top + elemtHeight;
+          bounds.right = bounds.left + this.outerWidth();
+          bounds.bottom = bounds.top + this.outerHeight();
+
+          return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+        }
+
+        // play when on viewport
+        $(window).scroll(function(){
+          $("iframe:in-viewport").each(function() {
+            if( $(this).isFullyVisible() && !$(this).hasClass("played") ) {
+              var iframe = $(this)[0];
+              var player = $f(iframe);
+              player.api('play');
+              $(this).toggleClass("playing");
+            }
+          });
+          $("iframe:below-the-fold").each(function() {
+            var iframe = $(this)[0];
+            var player = $f(iframe);
+            player.api('pause');
+            $(this).toggleClass("playing");
+          });
+          $("iframe:above-the-top").each(function() {
+            var iframe = $(this)[0];
+            var player = $f(iframe);
+            player.api('pause');
+            $(this).toggleClass("playing");
+          });
+        });
+
         $("iframe").each(function() {
+          var ifr = $(this)
           var iframe = $(this)[0];
           var player = $f(iframe);
 
           $(this).hover(function() {
-            player.api('play');
+            if ( !$(this).hasClass("playing") ) {
+              player.api('play');
+              $(this).toggleClass("playing");
+            } else {
+              player.api('play');
+              $(this).toggleClass("playing");
+            }
           }, function() {
             player.api('pause');
+            $(this).toggleClass("playing");
+            $(this).addClass("played");
           });
         });
+
+        // solve on scroll
         </script>
     </body>
 </html>
