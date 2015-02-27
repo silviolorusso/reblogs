@@ -92,7 +92,7 @@ Reblog URLS:
 			# use Qt
 			s.capture(url, filename, width, height)
 		i += 1 
-		if delay <= 2:
+		if delay <= 3:
 			delay += 0.1
 		else:
 			delay = 0
