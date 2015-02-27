@@ -13,6 +13,7 @@ import os
 import sys
 import subprocess
 import string
+from time import sleep
 from get_reblog_urls import get_reblog_urls
 from take_screenshot import Screenshot
 
@@ -77,16 +78,30 @@ Reblog URLS:
 	# take screenshots
 	s = Screenshot()
 	i = 0
+	# for animated gifs
+	delay = 0
 	for url in urls:
 		filename = str(i).zfill(5) + '_' + validate(url) + '.png'
-		#filename = str(i).zfill(5) + '.png'
-		s.capture(url, filename, width, height)
-		i += 1
+		clipwidth = "--clipwidth=" + str(width)
+		clipheight = "--clipheight=" + str(height)
+		my_delay = "--delay=" + str(delay)
+		try: 
+			# use webkit2png
+			subprocess.call(["webkit2png", url, "-C", "-W", str(width), "-H", str(height), clipwidth, clipheight, "--scale=1", "-o", my_delay, filename])
+		except:
+			# use Qt
+			s.capture(url, filename, width, height)
+		i += 1 
+		if delay <= 2:
+			delay += 0.1
+		else:
+			delay = 0
+		sleep(1)
 
 	# make video
-	# ffmpeg -f image2 -r 12 -pattern_type glob -i '*.png' -vcodec mpeg4 -y movie.mp4
+	# ffmpeg -f image2 -pattern_type glob -i '*.png' -r 12 -vcodec mpeg4 -qscale:v 1 -y movie.mp4
 	movie_filename = "../movie_" + str(width) + "_" + str(height) + "_" + speed + ".mp4" 
-	subprocess.call(["ffmpeg", "-f", "image2", "-r", speed, "-pattern_type", "glob", "-i", "*.png", "-vcodec", "mpeg4", "-qscale:v", "1", "-y", movie_filename])
+	subprocess.call(["ffmpeg", "-f", "image2", "-pattern_type", "glob", "-i", "*.png", "-r", speed, "-vcodec", "mpeg4", "-qscale:v", "1", "-y", movie_filename])
 	print "\nVideo successfully saved."
 
 # WORK
