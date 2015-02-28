@@ -182,6 +182,27 @@
 
             /* Custom CSS */
             {CustomCSS}
+
+            .description {
+              color: white !important;
+            }
+            .content {
+              max-width: 600px;
+            }
+            #posts article {
+              margin-bottom: 200px;
+              font-size: 14px;
+            }
+            #posts article.active {
+              margin-bottom: 200px;
+            }
+            .post-content .caption {
+              margin-bottom: 0;
+              display: none;
+            }
+            #posts article.active .post-content .caption {
+              display: block;
+            }
         </style>
     </head>
     <body data-urlencoded-name="{URLEncodedName}" class="{select:Layout}{block:IndexPage} index-page{/block:IndexPage}{block:PermalinkPage} permalink{/block:PermalinkPage}{block:SearchPage} search-page{block:NoSearchResults} no-results{/block:NoSearchResults}{/block:SearchPage}{block:HideHeaderImage} no-header-image{/block:HideHeaderImage}{block:NoStretchHeaderImage} contain-header-image{/block:NoStretchHeaderImage}">
@@ -606,77 +627,64 @@
             </script>
         {/block:IfGoogleAnalyticsID}
 
-        <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
-        <script src="http://www.appelsiini.net/download/jquery.viewport.mini.js"></script>
+        <script src="http://static.tumblr.com/n129kmj/Stinkhtgi/froogaloop2.min.js"></script>
+        <script src="http://static.tumblr.com/n129kmj/4Zqnkhtfc/jquery.inview.js"></script>
         <script>
         // add ?api=1 to vimeo iframe url
+        
+        function autoplay() {
+          // play when on viewport
+          $('iframe').each(function() {
+            $(this).bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
+              if (isInView) {
+                // element is now visible in the viewport
+                if (visiblePartY == 'top') {
+                  // top part of element is visible
+                } else if (visiblePartY == 'bottom') {
+                  // bottom part of element is visible
+                } else {
+                  // whole part of element is visible
+                  var iframe = $(this)[0];
+                  var player = $f(iframe);
+                  player.api('play');
+                  $(this).toggleClass("playing");
+                }
+              } else {
+                // element has gone out of viewport
+                var iframe = $(this)[0];
+                var player = $f(iframe);
+                player.api('pause');
+                $(this).toggleClass("playing");
+              }
+            });
+          });
 
-        // check if element if fully visible (http://stackoverflow.com/questions/19482268/jquery-detect-if-element-is-fully-in-viewport)
-        jQuery.fn.isFullyVisible = function(){
-          var win = $(window);
-          var viewport = {
-              top : win.scrollTop(),
-              left : win.scrollLeft()
-          };
-          viewport.right = viewport.left + win.width();
-          viewport.bottom = viewport.top + win.height();
+          // hover
+          $("iframe").each(function() {
+            var ifr = $(this)
+            var iframe = $(this)[0];
+            var player = $f(iframe);
 
-          var elemtHeight = this.height();// Get the full height of current element
-          elemtHeight = Math.round(elemtHeight);// Round it to whole humber
-
-          var bounds = this.offset();// Coordinates of current element
-          bounds.top = bounds.top + elemtHeight;
-          bounds.right = bounds.left + this.outerWidth();
-          bounds.bottom = bounds.top + this.outerHeight();
-
-          return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+            $(this).hover(function() {
+              player.api('pause');
+              $(this).toggleClass("playing");
+            }, function() {
+              player.api('play');
+              $(this).toggleClass("playing");
+            });
+          });
+          // solve on scroll
         }
 
-        // play when on viewport
-        $(window).scroll(function(){
-          $("iframe:in-viewport").each(function() {
-            if( $(this).isFullyVisible() && !$(this).hasClass("played") ) {
-              var iframe = $(this)[0];
-              var player = $f(iframe);
-              player.api('play');
-              $(this).toggleClass("playing");
-            }
-          });
-          $("iframe:below-the-fold").each(function() {
-            var iframe = $(this)[0];
-            var player = $f(iframe);
-            player.api('pause');
-            $(this).toggleClass("playing");
-          });
-          $("iframe:above-the-top").each(function() {
-            var iframe = $(this)[0];
-            var player = $f(iframe);
-            player.api('pause');
-            $(this).toggleClass("playing");
-          });
+        $( document ).ready(function() {
+            autoplay();
         });
-
-        $("iframe").each(function() {
-          var ifr = $(this)
-          var iframe = $(this)[0];
-          var player = $f(iframe);
-
-          $(this).hover(function() {
-            if ( !$(this).hasClass("playing") ) {
-              player.api('play');
-              $(this).toggleClass("playing");
-            } else {
-              player.api('play');
-              $(this).toggleClass("playing");
-            }
-          }, function() {
-            player.api('pause');
-            $(this).toggleClass("playing");
-            $(this).addClass("played");
-          });
+        $('#posts').bind('DOMNodeInserted DOMNodeRemoved', function(event) {
+          if (event.type == 'DOMNodeInserted') {
+            // new content added
+            autoplay();
+          } 
         });
-
-        // solve on scroll
         </script>
     </body>
 </html>

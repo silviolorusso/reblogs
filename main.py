@@ -70,7 +70,11 @@ Amount of reblogs: %s
 Reblog URLS:
 %s
 	''' % (len(urls), source_url, todaystr, source_url, len(urls), urls_string)
-	report = open("report.txt", "w")
+	if not os.path.exists('report.txt'):
+		report = open("report.txt", "w")
+	else: 
+		report_filename = "report_" + timestr + ".txt"
+		report = open(report_filename, "w")
 	report.write(report_text)
 	report.close()
 
