@@ -8,7 +8,7 @@
         <title>{Title}{block:SearchPage} ({lang:Search results for SearchQuery}){/block:SearchPage}{block:PermalinkPage}{block:PostSummary} — {PostSummary}{/block:PostSummary}{/block:PermalinkPage}</title>
         {block:Description}
         <meta name="description" content="{MetaDescription}">
-        {/block:Description}
+        
 
         {block:Hidden}
         <meta name="if:Sliding header" content="1">
@@ -37,7 +37,9 @@
         <meta property="og:type" content="website"/>
         <meta property="og:image" content="http://static.tumblr.com/n129kmj/5Zknkj02i/kickended_og.png"/>
         <meta property="og:site_name" content="Reblogs"/>
-        <meta property="og:description" content=" It-Narratives from Tumblr"/>
+        {block:Description}
+        <meta property="og:description" content="{MetaDescription}"/>
+        {/block:Description}
 
         <style>
             /* Colors */
