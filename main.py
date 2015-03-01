@@ -61,7 +61,7 @@ def main(width, height, max_pages, speed, source_url):
 	today = datetime.date.today()
 	todaystr = today.strftime('%d, %b %Y')
 	report_text = '''
-%s reblogs of %s - %s 
+%s reblogs from %s - %s 
 
 Source post: %s
 
@@ -73,6 +73,7 @@ Reblog URLS:
 	if not os.path.exists('report.txt'):
 		report = open("report.txt", "w")
 	else: 
+		timestr = time.strftime("%Y%m%d-%H%M%S")
 		report_filename = "report_" + timestr + ".txt"
 		report = open(report_filename, "w")
 	report.write(report_text)
@@ -83,7 +84,6 @@ Reblog URLS:
 		os.makedirs('screenshots')
 		os.chdir('screenshots')
 	else: 
-		timestr = time.strftime("%Y%m%d-%H%M%S")
 		directory_stamped = 'screenshots_' + timestr
 		os.makedirs(directory_stamped)
 		os.chdir(directory_stamped)

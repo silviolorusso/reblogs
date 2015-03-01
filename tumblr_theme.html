@@ -33,6 +33,12 @@
             <script src="http://static.tumblr.com/hriofhd/Qj0m8pn7q/html5shiv.js"></script>
         <![endif]-->
 
+        <!--<meta property="og:title" content="Reblogs"/>-->
+        <meta property="og:type" content="website"/>
+        <meta property="og:image" content="http://static.tumblr.com/n129kmj/5Zknkj02i/kickended_og.png"/>
+        <meta property="og:site_name" content="Reblogs"/>
+        <meta property="og:description" content=" It-Narratives from Tumblr"/>
+
         <style>
             /* Colors */
             body {
@@ -197,11 +203,23 @@
               margin-bottom: 200px;
             }
             .post-content .caption {
-              margin-bottom: 0;
+              margin-bottom: 10px;
               display: none;
             }
             #posts article.active .post-content .caption {
               display: block;
+            }
+            .inline-meta {
+              display: none;
+            }
+            #posts article.active .inline-meta {
+              display: block;
+            }
+            .post-extra.has-reblog, .post-extra.has-source, .post-extra.has-tags {
+            margin: 0 20px 0;
+            }
+            .date-notes {
+              display: none !important;
             }
         </style>
     </head>
