@@ -30,8 +30,8 @@ my_height = 700
 # max amount of reblog pages
 my_max_pages = 5
 
-# video speed
-my_speed = "12"
+# video speed: 1 = normal; 2 = half
+my_speed = 2.5
 
 # FUNCTIONS
 
@@ -114,9 +114,10 @@ Reblog URLS:
 		print "Screenshot " + str(i) + " out of " + str(len(urls)) + " saved."
 
 	# make video
-	# ffmpeg -f image2 -pattern_type glob -i '*.png' -r 12 -vcodec mpeg4 -qscale:v 1 -y movie.mp4
+	# ffmpeg -f image2 -pattern_type glob -i '*.png' -vf "setpts=2.5*PTS" -r 25 -vcodec mpeg4 -qscale:v 1 -y movie.mp4
+	speed_arg = "setpts=" + str(speed) + "*PTS"
 	movie_filename = "../movie_" + str(width) + "_" + str(height) + "_" + str(max_pages) + "_" + speed + ".mp4" 
-	subprocess.call(["ffmpeg", "-f", "image2", "-pattern_type", "glob", "-i", "*.png", "-r", speed, "-vcodec", "mpeg4", "-qscale:v", "1", "-y", movie_filename])
+	subprocess.call(["ffmpeg", "-f", "image2", "-pattern_type", "glob", "-i", "*.png", "-vf", speed_arg, "-r", "25", "-vcodec", "mpeg4", "-qscale:v", "1", "-y", movie_filename])
 	print "\nVideo successfully saved."
 
 # WORK

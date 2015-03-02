@@ -12,7 +12,6 @@ import urllib2
 import re
 from urlparse import urlparse
 from time import sleep
-from datetime import date
 
 # VARIABLES
 
@@ -75,7 +74,7 @@ def get_reblog_urls(source_url, max_pages):
   next_notes_id = browse_notes(notes_url_tumblr)
   next_notes_ids = []
   i = 0
-  while next_notes_id and i <= max_pages:
+  while next_notes_id and i <= max_pages - 1:
     next_notes_ids.append(next_notes_id)
     next_notes_id = browse_notes(notes_url_tumblr + '?from_c=' + next_notes_id)
     i += 1
