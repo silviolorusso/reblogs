@@ -47,7 +47,11 @@ def main(width, height, max_pages, speed, source_url):
 	urls = get_reblog_urls(source_url, max_pages)
 	print "Amount of reblogs: " + str(len(urls))
 
-	# create and go into folder
+	# all data related to video
+	time_str = time.strftime("%Y%m%d-%H%M%S")
+	data_str = str(width) + "_" + str(height) + "_" + str(max_pages) + "_" + speed + '_' + time_str
+
+	# create and go into source url folder
 	directory = source_url
 	directory = validate(directory)
 	if not os.path.exists(directory):
@@ -70,21 +74,14 @@ Amount of reblogs: %s
 Reblog URLS:
 %s
 	''' % (len(urls), source_url, todaystr, source_url, len(urls), urls_string)
-	if not os.path.exists('report.txt'):
-		report = open("report.txt", "w")
-	else: 
-		timestr = time.strftime("%Y%m%d-%H%M%S")
-		report_filename = "report_" + timestr + ".txt"
-		report = open(report_filename, "w")
+	report_filename = "report_" + data_str + ".txt"
+	report = open(report_filename, "w")
 	report.write(report_text)
 	report.close()
 
 	# create screenshot folder
-	if not os.path.exists('screenshots'):
-		os.makedirs('screenshots')
-		os.chdir('screenshots')
-	else: 
-		directory_stamped = 'screenshots_' + timestr
+	directory_stamped = 'screenshots_' + data_str 
+	if not os.path.exists(directory_stamped):
 		os.makedirs(directory_stamped)
 		os.chdir(directory_stamped)
 
@@ -116,7 +113,7 @@ Reblog URLS:
 	# make video
 	# ffmpeg -f image2 -pattern_type glob -i '*.png' -vf "setpts=2.5*PTS" -r 25 -vcodec mpeg4 -qscale:v 1 -y movie.mp4
 	speed_arg = "setpts=" + str(speed) + "*PTS"
-	movie_filename = "../movie_" + str(width) + "_" + str(height) + "_" + str(max_pages) + "_" + speed + ".mp4" 
+	movie_filename = "../movie_" + data_str + ".mp4" 
 	subprocess.call(["ffmpeg", "-f", "image2", "-pattern_type", "glob", "-i", "*.png", "-vf", speed_arg, "-r", "25", "-vcodec", "mpeg4", "-qscale:v", "1", "-y", movie_filename])
 	print "\nVideo successfully saved."
 
